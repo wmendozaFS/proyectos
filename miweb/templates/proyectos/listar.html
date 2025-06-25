@@ -1,5 +1,5 @@
 {# proyectos/lista.html #}
-
+{% extends 'base.html' %}
 <h1>Lista de Proyectos</h1>
 
 <form id="proyectos-form"> {# Envuelve la lista en un formulario para facilitar la selección #}
@@ -21,7 +21,7 @@
                         <td>
                             <input type="checkbox" name="proyecto_seleccionado" value="{{ proyecto.pk }}" class="proyecto-checkbox">
                         </td>
-                        <td>{{ proyecto.title }}</td>
+                        <td>{{ proyecto.nombre }}</td>
                         <td>{{ proyecto.description }}</td>
                         {# Puedes añadir más datos del proyecto aquí #}
                     </tr>
