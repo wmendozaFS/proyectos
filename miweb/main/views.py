@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView
+from django.views.generic import ListView, CreateView, UpdateView
 from .models import Proyecto
 from .forms import ProyectoForm
 from django.urls import reverse_lazy
@@ -9,7 +9,7 @@ def landing(request):
 
 class ProyectoListView(ListView):
     model = Proyecto
-    template_name = 'proyectos/lista.html'
+    template_name = 'proyectos/listar.html'
 
 class ProyectoCreateView(CreateView):
     model = Proyecto
@@ -17,7 +17,7 @@ class ProyectoCreateView(CreateView):
     template_name = 'proyectos/form.html'
     success_url = reverse_lazy('lista')
 
-class ProyectoEditView(EditView):
+class ProyectoUpdateView(UpdateView):
     model = Proyecto
     form_class = ProyectoForm
     template_name = 'proyectos/form.html'

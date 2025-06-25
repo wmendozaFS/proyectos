@@ -1,0 +1,82 @@
+{# proyectos/lista.html #}
+
+<h1>Lista de Proyectos</h1>
+
+<form id="proyectos-form"> {# Envuelve la lista en un formulario para facilitar la selección #}
+    {% csrf_token %} {# ¡Importante para la seguridad en Django! #}
+
+    {% if object_list %}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Seleccionar</th>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    {# Puedes añadir más columnas aquí si es necesario #}
+                </tr>
+            </thead>
+            <tbody>
+                {% for proyecto in object_list %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="proyecto_seleccionado" value="{{ proyecto.pk }}" class="proyecto-checkbox">
+                        </td>
+                        <td>{{ proyecto.title }}</td>
+                        <td>{{ proyecto.description }}</td>
+                        {# Puedes añadir más datos del proyecto aquí #}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <button type="button" id="editar-seleccionado-btn" disabled>Editar Proyecto Seleccionado</button>
+        <p id="mensaje-error" style="color: red;"></p> {# Para mostrar mensajes de error si no se selecciona nada #}
+
+    {% else %}
+        <p>No hay proyectos disponibles.</p>
+    {% endif %}
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('.proyecto-checkbox');
+        const editButton = document.getElementById('editar-seleccionado-btn');
+        const errorMessage = document.getElementById('mensaje-error');
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Deseleccionar todos los demás checkboxes si este se selecciona
+                if (this.checked) {
+                    checkboxes.forEach(otherCheckbox => {
+                        if (otherCheckbox !== this) {
+                            otherCheckbox.checked = false;
+                        }
+                    });
+                    editButton.disabled = false; // Habilitar el botón si hay uno seleccionado
+                    errorMessage.textContent = ''; // Limpiar mensaje de error
+                } else {
+                    // Si se deselecciona el único checkbox, deshabilitar el botón
+                    const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+                    editButton.disabled = !anyChecked;
+                }
+            });
+        });
+
+        editButton.addEventListener('click', function() {
+            let selectedPk = null;
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    selectedPk = checkbox.value;
+                }
+            });
+
+            if (selectedPk) {
+                // Redirigir a la página de edición del proyecto seleccionado
+                window.location.href = `/editar/${selectedPk}/`; // Asegúrate de que esta URL coincida con tu urls.py
+            } else {
+                errorMessage.textContent = 'Por favor, selecciona un proyecto para editar.';
+            }
+        });
+    });
+</script>
