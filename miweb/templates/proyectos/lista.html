@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Proyectos{% endblock %}
+{% block content %}
+<h2>Proyectos</h2>
+<a href="{% url 'nuevo' %}" class="btn btn-success mb-3">+ Nuevo</a>
+{% if object_list %}
+    <p>Hay {{ object_list|length }} proyectos.</p>
+{% else %}
+    <p>No hay proyectos disponibles.</p>
+{% endif %}
+<ul class="list-group">
+    {% for proyecto in object_list %}
+      <li class="list-group-item">{{ proyecto.nombre }}</li>
+    {% endfor %}
+</ul>
+{% endblock %}
