@@ -9,7 +9,7 @@ def landing(request):
 
 class ProyectoListView(ListView):
     model = Proyecto
-    template_name = 'proyectos/listar.html'
+    template_name = 'proyectos/lista.html'
 
 class ProyectoCreateView(CreateView):
     model = Proyecto
